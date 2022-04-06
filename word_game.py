@@ -15,7 +15,7 @@ database = {
               ]
             }
 
-def whichArticle(word):
+def whichArticle(word): # Defines whe is use "a" or "an"
   firstCharacter = word[:1].lower() 
   if firstCharacter in "aeiou":
     return "an "
@@ -24,13 +24,10 @@ def whichArticle(word):
 
 def tellTheStory(story, storyHeader):
   phrase = story["story"]
-  newStory = ""
-  
   for element in storyHeader:
     if element != "story":
-      newStory = phrase.replace(element,story[element])
-
-  return newStory
+      phrase = phrase.replace(element,story[element])
+  return phrase
 
 def askQuestions(story, storyHeader):
   for element in storyHeader:
@@ -39,15 +36,17 @@ def askQuestions(story, storyHeader):
       if story[element] == "object":
         story[element] = whichArticle(answer) + answer
       else:
-        story[element] = answer 
+        story[element] = answer
+  return story
 
 def wordGame(database):
   dataHeader = list(database.keys())[0]
   data = database[dataHeader] # retrieves the array of objects
   story = data[random.randrange(0,len(data))]
   storyHeader = list(story.keys())
-  askQuestions(story,storyHeader)
-  finalStory = tellTheStory(story,storyHeader)
+  story = askQuestions(story,storyHeader)
+  return tellTheStory(story,storyHeader)
+  
 
 print(wordGame(database))
 
